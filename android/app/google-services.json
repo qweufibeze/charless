@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "733049455918",
+    "project_id": "charless-2b965",
+    "storage_bucket": "charless-2b965.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:733049455918:android:2008169532babed3a9e6bf",
+        "android_client_info": {
+          "package_name": "com.balobanov.charless_06"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "733049455918-ok3o6jtvb9m37j874p23faf66pvao51r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8NG4ZiDxjcXVRy11wFOtdzfSrvyYMWhk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "733049455918-ok3o6jtvb9m37j874p23faf66pvao51r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

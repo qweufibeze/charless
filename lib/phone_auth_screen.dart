@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:firebase_core/firebase_core.dart' as firebase_auth;
+import 'firebase_options.dart';
 
 
 enum PhoneAuthEvent {
