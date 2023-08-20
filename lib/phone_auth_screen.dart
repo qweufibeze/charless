@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
-
 enum PhoneAuthEvent {
   startVerification,
   completeVerification,
 }
-
 
 enum PhoneAuthState {
   initial,
@@ -50,12 +48,18 @@ class PhoneAuthScreenContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Phone Authentication')),
-      body: const Center(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Enter your phone number:'),
-            SizedBox(height: 20),
+            Image.asset('assets/phone_auth_image.png', height: 150), // Добавьте изображение в папку assets
+            const SizedBox(height: 20),
+            Text(
+              'Enter your phone number:',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
             PhoneInputField(),
           ],
         ),
@@ -81,21 +85,20 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
       key: _formKey,
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32.0),
-            child: TextFormField(
-              controller: _phoneController,
-              keyboardType: TextInputType.phone,
-              decoration: const InputDecoration(
-                hintText: 'Enter your phone number',
-              ),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Please enter your phone number';
-                }
-                return null;
-              },
+          TextFormField(
+            controller: _phoneController,
+            keyboardType: TextInputType.phone,
+            decoration: InputDecoration(
+              hintText: 'Enter your phone number',
+              border: OutlineInputBorder(),
+              contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
             ),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please enter your phone number';
+              }
+              return null;
+            },
           ),
           const SizedBox(height: 20),
           ElevatedButton(
@@ -105,6 +108,10 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
               }
             },
             child: const Text('Send Verification Code'),
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              minimumSize: Size(double.infinity, 0),
+            ),
           ),
         ],
       ),
