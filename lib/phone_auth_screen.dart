@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:firebase_core/firebase_core.dart' as firebase_auth;
+
 
 enum PhoneAuthEvent {
   startVerification,
@@ -52,12 +54,12 @@ class PhoneAuthScreenContent extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: const Padding(
+        padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 50),
+            SizedBox(height: 50),
             Text(
               'Welcome',
               style: TextStyle(
@@ -65,7 +67,7 @@ class PhoneAuthScreenContent extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             PhoneInputField(),
           ],
         ),
@@ -123,7 +125,6 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
                 BlocProvider.of<PhoneAuthBloc>(context).add(PhoneAuthEvent.startVerification);
               }
             },
-            child: const Text('Send Verification Code'),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 16),
               minimumSize: Size(double.infinity, 0),
@@ -132,6 +133,7 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
+            child: const Text('Send Verification Code'),
           ),
         ],
       ),
