@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 enum PhoneAuthEvent {
@@ -31,7 +30,7 @@ class PhoneAuthBloc extends Bloc<PhoneAuthEvent, PhoneAuthState> {
 }
 
 class PhoneAuthScreen extends StatelessWidget {
-  const PhoneAuthScreen({super.key});
+  const PhoneAuthScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,22 +42,28 @@ class PhoneAuthScreen extends StatelessWidget {
 }
 
 class PhoneAuthScreenContent extends StatelessWidget {
-  const PhoneAuthScreenContent({super.key});
+  const PhoneAuthScreenContent({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Phone Authentication')),
+      backgroundColor: Color(0xFFF5F5F5),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset('assets/phone_auth_image.png', height: 150), // Добавьте изображение в папку assets
-            const SizedBox(height: 20),
+            const SizedBox(height: 50),
             Text(
-              'Enter your phone number:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              'Welcome',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 20),
             PhoneInputField(),
@@ -70,7 +75,7 @@ class PhoneAuthScreenContent extends StatelessWidget {
 }
 
 class PhoneInputField extends StatefulWidget {
-  const PhoneInputField({super.key});
+  const PhoneInputField({Key? key}) : super(key: key);
 
   @override
   _PhoneInputFieldState createState() => _PhoneInputFieldState();
@@ -80,9 +85,8 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
   final _phoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  // Добавьте маску для формата номера телефона
   final MaskTextInputFormatter _phoneFormatter = MaskTextInputFormatter(
-    mask: '+# (###) ###-##-##',
+    mask: '+7 (###) ###-##-##',
     filter: {'#': RegExp(r'[0-9]')},
   );
 
@@ -102,6 +106,8 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
                 borderRadius: BorderRadius.circular(12),
               ),
               contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+              filled: true,
+              fillColor: Colors.white,
             ),
             validator: (value) {
               if (value!.isEmpty) {
@@ -121,9 +127,9 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 16),
               minimumSize: Size(double.infinity, 0),
-              primary: Colors.blue, // Цвет фона кнопки
+              primary: Colors.deepOrange,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12), // Закругление углов кнопки
+                borderRadius: BorderRadius.circular(12),
               ),
             ),
           ),
@@ -132,6 +138,3 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
     );
   }
 }
-
-
-
