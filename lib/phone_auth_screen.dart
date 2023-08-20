@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 enum PhoneAuthEvent {
   startVerification,
@@ -79,6 +80,12 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
   final _phoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  // Добавьте маску для формата номера телефона
+  final MaskTextInputFormatter _phoneFormatter = MaskTextInputFormatter(
+    mask: '+# (###) ###-##-##',
+    filter: {'#': RegExp(r'[0-9]')},
+  );
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -88,9 +95,12 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
           TextFormField(
             controller: _phoneController,
             keyboardType: TextInputType.phone,
+            inputFormatters: [_phoneFormatter],
             decoration: InputDecoration(
               hintText: 'Enter your phone number',
-              border: OutlineInputBorder(),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
               contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
             ),
             validator: (value) {
@@ -111,6 +121,10 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 16),
               minimumSize: Size(double.infinity, 0),
+              primary: Colors.blue, // Цвет фона кнопки
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12), // Закругление углов кнопки
+              ),
             ),
           ),
         ],
@@ -118,3 +132,6 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
     );
   }
 }
+
+
+
