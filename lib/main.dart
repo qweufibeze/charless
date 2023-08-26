@@ -1,22 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:charless_06/phone_auth_screen.dart';
 
-void main() {
-  runApp(const MyApp());
+void main(){
+  runApp(
+    const MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: Counter(),
+        ),
+      ),
+    )
+
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class Counter extends StatefulWidget{
+  const Counter({super.key});
+
+  @override
+  State<Counter> createState() => _CounterState();
+
+}
+
+class _CounterState extends State<Counter>{
+  int _counter = 0;
+  void _increment(){
+    setState(() {
+      _counter++;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Your App Name',
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
-      ),
-      home: const PhoneAuthScreen(), // Здесь вызываем экран авторизации
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        ElevatedButton(
+            onPressed: _increment,
+            child: const Text("Increment"),
+        ),
+        const SizedBox(width: 16),
+        Text('Count: $_counter')
+      ],
     );
   }
 }
-
