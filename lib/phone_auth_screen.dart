@@ -142,17 +142,11 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
   }
 }
 
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Your App Name',
-//       theme: ThemeData(
-//         primarySwatch: Colors.orange,
-//       ),
-//       home: const PhoneAuthScreen(), // Здесь вызываем экран авторизации
-//     );
-//   }
-// }
+
+void main(){
+  runApp(
+    const MaterialApp(
+      home: PhoneAuthScreen()
+    )
+  );
+}
