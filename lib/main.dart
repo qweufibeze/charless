@@ -5,7 +5,3 @@ void main(){
   const app = App();
   runApp(app);
 }
-
-
-
-
