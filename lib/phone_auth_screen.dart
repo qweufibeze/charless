@@ -16,6 +16,22 @@ enum PhoneAuthState {
   codeVerified,
 }
 
+class CreateNewWidget extends StatefulWidget{
+  const CreateNewWidget({super.key});
+
+  @override
+  _CreateNewWidget createState() => _CreateNewWidget();
+
+}
+
+class _CreateNewWidget extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
+  }
+}
+
 class PhoneAuthBloc extends Bloc<PhoneAuthEvent, PhoneAuthState> {
   PhoneAuthBloc() : super(PhoneAuthState.initial);
 
@@ -50,17 +66,13 @@ class PhoneAuthScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF5F5F5),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
+      backgroundColor: Colors.cyan.shade700,
       body: const Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 50),
+            SizedBox(height: 200),
             Text(
               'Welcome',
               style: TextStyle(
@@ -122,14 +134,15 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                BlocProvider.of<PhoneAuthBloc>(context).add(PhoneAuthEvent.startVerification);
-              }
+
+              // if (_formKey.currentState!.validate()) {
+              //   BlocProvider.of<PhoneAuthBloc>(context).add(PhoneAuthEvent.startVerification);
+              // }
             },
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 16),
-              minimumSize: Size(double.infinity, 0),
-              primary: Colors.deepOrange,
+              minimumSize: const Size(double.infinity, 0),
+              primary: Colors.cyanAccent.shade700,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
