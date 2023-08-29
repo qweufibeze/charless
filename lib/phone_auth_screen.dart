@@ -103,7 +103,8 @@ class _PhoneInputFieldState extends State<PhoneInputField>  {
     return Form(
       key: _formKey,
       child: Stack(
-          children: <Widget>[ Column(
+        children: <Widget>[
+          Column(
             children: [
               TextFormField(
                 controller: _phoneController,
@@ -142,7 +143,14 @@ class _PhoneInputFieldState extends State<PhoneInputField>  {
                 const CreateNewWidget(),
             ],
           ),
-          ]
+          if(_isShowWidget) // Add this Positioned widget
+            Positioned(
+              top: MediaQuery.of(context).size.height * 0.5, // Adjust this value as needed
+              left: 16,
+              right: 16,
+              child: const CreateNewWidget(),
+            ),
+        ],
       ),
     );
   }
@@ -173,8 +181,8 @@ class _CreateNewWidget extends State<CreateNewWidget> with SingleTickerProviderS
     );
 
     _offsetAnimation = Tween<Offset>(
-      begin: const Offset(0, 0), // Start at the top
-      end: const Offset(0, 1.36), // End at the center
+      begin: const Offset(0, -1.36), // Start above the top
+      end: const Offset(0, 0), // End at the center
     ).animate(CurvedAnimation(
       parent: _controller,
       curve: Curves.fastOutSlowIn,
