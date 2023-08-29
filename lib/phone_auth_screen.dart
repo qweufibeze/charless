@@ -67,7 +67,7 @@ class PhoneAuthScreenContent extends StatelessWidget {
                 color: Colors.pink.shade600,
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 35),
             const PhoneInputField(),
           ],
         ),
@@ -83,7 +83,7 @@ class PhoneInputField extends StatefulWidget {
   _PhoneInputFieldState createState() => _PhoneInputFieldState();
 }
 
-class _PhoneInputFieldState extends State<PhoneInputField>  {
+class _PhoneInputFieldState extends State<PhoneInputField> with SingleTickerProviderStateMixin  {
   final _phoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   var _isShowWidget= false;
@@ -98,59 +98,112 @@ class _PhoneInputFieldState extends State<PhoneInputField>  {
     });
   }
 
+  late AnimationController _controllerInputPhone;
+  late Animation<Offset> _offsetAnimationInputPhone;
+
+  late AnimationController _controllerSendButton;
+  late Animation<Offset> _offsetAnimationSendButton;
+
+  @override
+  void initState() {
+    super.initState();
+    _controllerInputPhone = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    );
+
+    _offsetAnimationInputPhone = Tween<Offset>(
+      begin: const Offset(0, 0),
+      end: const Offset(0, 0),
+    ).animate(CurvedAnimation(
+      parent: _controllerInputPhone,
+      curve: Curves.fastOutSlowIn,
+    ));
+
+
+    _offsetAnimationSendButton = Tween<Offset>(
+      begin: const Offset(0, 0),
+      end: const Offset(0, 1),
+    ).animate(CurvedAnimation(
+      parent: _controllerInputPhone,
+      curve: Curves.fastOutSlowIn,
+    ));
+  }
+
+  void _startAnimationInputPhone(){
+    _controllerInputPhone.forward();
+  }
+
+  void _startAnimationSendButton(){
+    _controllerSendButton.forward();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Stack(
-        children: <Widget>[
-          Column(
-            children: [
-              TextFormField(
-                controller: _phoneController,
-                keyboardType: TextInputType.phone,
-                inputFormatters: [_phoneFormatter],
-                decoration: InputDecoration(
-                  hintText: 'Enter your phone number',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-                  filled: true,
-                  fillColor: Colors.white,
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter your phone number';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _toggleWidget,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: const Color.fromARGB(255, 255, 3, 67),
-                  minimumSize: const Size(double.infinity, 0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+    return SizedBox(
+      height: 200,
+      child: Form(
+        key: _formKey,
+        child: Stack(
+          children: <Widget>[
+            Column(
+              children: [
+                SlideTransition(
+                  position: _offsetAnimationInputPhone,
+                  child: TextFormField(
+                    controller: _phoneController,
+                    keyboardType: TextInputType.phone,
+                    inputFormatters: [_phoneFormatter],
+                    decoration: InputDecoration(
+                      hintText: 'Enter your phone number',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your phone number';
+                      }
+                      return null;
+                    },
                   ),
                 ),
-                child: const Text('Send Verification Code'),
-              ),
-              if(_isShowWidget)
-                const CreateNewWidget(),
-            ],
-          ),
-          if(_isShowWidget) // Add this Positioned widget
-            Positioned(
-              top: MediaQuery.of(context).size.height * 0.5, // Adjust this value as needed
-              left: 16,
-              right: 16,
-              child: const CreateNewWidget(),
+                const SizedBox(height: 20),
+                SlideTransition(
+                  position: _offsetAnimationSendButton,
+                  child: ElevatedButton(
+                    onPressed:(){
+                      _startAnimationInputPhone();
+                      _toggleWidget();
+                      _startAnimationSendButton();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      backgroundColor: const Color.fromARGB(255, 255, 3, 67),
+                      minimumSize: const Size(double.infinity, 0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text('Send Verification Code'),
+                  ),
+                ),
+                if(_isShowWidget)
+                  const CreateNewWidget(),
+              ],
             ),
-        ],
+            if(_isShowWidget)
+              Positioned(
+                top: MediaQuery.of(context).size.height * 0.5,
+                left: 16,
+                right: 16,
+                child: const CreateNewWidget(),
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -164,13 +217,14 @@ class CreateNewWidget extends StatefulWidget {
 }
 
 class _CreateNewWidget extends State<CreateNewWidget> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<Offset> _offsetAnimation;
-
+  final _phoneController = TextEditingController();
   final MaskTextInputFormatter _phoneFormatter = MaskTextInputFormatter(
     mask: '### ###',
     filter: {'#': RegExp(r'[0-9]')},
   );
+
+  late AnimationController _controller;
+  late Animation<Offset> _offsetAnimation;
 
   @override
   void initState() {
@@ -181,46 +235,38 @@ class _CreateNewWidget extends State<CreateNewWidget> with SingleTickerProviderS
     );
 
     _offsetAnimation = Tween<Offset>(
-      begin: const Offset(0, -1.36), // Start above the top
-      end: const Offset(0, 0), // End at the center
+      begin: const Offset(0, -2.0),
+      end: const Offset(0, -1.225),
     ).animate(CurvedAnimation(
       parent: _controller,
       curve: Curves.fastOutSlowIn,
     ));
-    _controller.forward(); // Start the animation
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
+    _controller.forward();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.topCenter,
-      child: SlideTransition(
-        position: _offsetAnimation,
-        child: TextFormField(
-          inputFormatters: [_phoneFormatter],
-          keyboardType: TextInputType.phone,
-          decoration: InputDecoration(
-            hintText: 'Enter a code',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-            filled: true,
-            fillColor: Colors.white,
+    return SlideTransition(
+      position: _offsetAnimation,
+      child: TextFormField(
+        controller: _phoneController,
+        inputFormatters: [_phoneFormatter],
+        keyboardType: TextInputType.phone,
+        decoration: InputDecoration(
+          hintText: 'Enter a code',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
           ),
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Enter a code';
-            }
-            return null;
-          },
+          contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+          filled: true,
+          fillColor: Colors.white,
         ),
+        validator: (value) {
+          if (value!.isEmpty) {
+            return 'Enter a code';
+          }
+          return null;
+        },
       ),
     );
   }
