@@ -16,14 +16,6 @@ enum PhoneAuthState {
   codeVerified,
 }
 
-class CreateNewWidget extends StatefulWidget{
-  const CreateNewWidget({super.key});
-
-  @override
-  _CreateNewWidget createState() => _CreateNewWidget();
-
-}
-
 class _CreateNewWidget extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
@@ -66,22 +58,23 @@ class PhoneAuthScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.cyan.shade700,
-      body: const Padding(
-        padding: EdgeInsets.all(16.0),
+      backgroundColor: const Color.fromARGB(100, 21, 6, 39),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 200),
+            const SizedBox(height: 200),
             Text(
               'Welcome',
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 45,
                 fontWeight: FontWeight.bold,
+                color: Colors.pink.shade600,
               ),
             ),
-            SizedBox(height: 20),
-            PhoneInputField(),
+            const SizedBox(height: 20),
+            const PhoneInputField(),
           ],
         ),
       ),
@@ -142,7 +135,7 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 16),
               minimumSize: const Size(double.infinity, 0),
-              primary: Colors.cyanAccent.shade700,
+              primary: Color.fromARGB(255, 255, 3, 67),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
