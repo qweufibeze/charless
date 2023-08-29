@@ -16,13 +16,6 @@ enum PhoneAuthState {
   codeVerified,
 }
 
-class _CreateNewWidget extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
-  }
-}
 
 class PhoneAuthBloc extends Bloc<PhoneAuthEvent, PhoneAuthState> {
   PhoneAuthBloc() : super(PhoneAuthState.initial);
@@ -89,7 +82,9 @@ class PhoneInputField extends StatefulWidget {
   _PhoneInputFieldState createState() => _PhoneInputFieldState();
 }
 
-class _PhoneInputFieldState extends State<PhoneInputField> {
+class _PhoneInputFieldState extends State<PhoneInputField> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<Offset> _offsetAnimation;
   final _phoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
@@ -97,6 +92,33 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
     mask: '+7 (###) ###-##-##',
     filter: {'#': RegExp(r'[0-9]')},
   );
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2000),
+    );
+
+    _offsetAnimation = Tween<Offset>(
+      begin: const Offset(-0, 0), // Start at the top
+      end: const Offset(-0, 1.367), // End at the center
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.fastOutSlowIn,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _startAnimation() {
+    _controller.forward();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,16 +148,14 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
           ),
           const SizedBox(height: 20),
           ElevatedButton(
-            onPressed: () {
-
-              // if (_formKey.currentState!.validate()) {
-              //   BlocProvider.of<PhoneAuthBloc>(context).add(PhoneAuthEvent.startVerification);
-              // }
+            onPressed: () => {
+             const CreateNewWidget(),
+              _startAnimation,
             },
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 16),
+              backgroundColor: const Color.fromARGB(255, 255, 3, 67),
               minimumSize: const Size(double.infinity, 0),
-              primary: Color.fromARGB(255, 255, 3, 67),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -147,6 +167,39 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
     );
   }
 }
+
+class CreateNewWidget extends StatefulWidget {
+  const CreateNewWidget({Key? key}) : super(key: key);
+
+  @override
+  _CreateNewWidget createState() => _CreateNewWidget();
+}
+
+class _CreateNewWidget extends State<CreateNewWidget> with SingleTickerProviderStateMixin{
+  @override
+  Widget build(BuildContext context) {
+    TextFormField(
+      keyboardType: TextInputType.phone,
+      decoration: InputDecoration(
+        hintText: 'Enter a code',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+        filled: true,
+        fillColor: Colors.white,
+      ),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Enter a code';
+        }
+        return null;
+      },
+    );
+    throw UnimplementedError();
+  }
+}
+
 
 
 void main(){

@@ -29,7 +29,7 @@ class _MyScreenState extends State<MyScreen> with SingleTickerProviderStateMixin
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 2000),
+      duration: const Duration(milliseconds: 200),
     );
 
     _offsetAnimation = Tween<Offset>(
