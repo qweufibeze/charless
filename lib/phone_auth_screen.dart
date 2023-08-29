@@ -82,14 +82,81 @@ class PhoneInputField extends StatefulWidget {
   _PhoneInputFieldState createState() => _PhoneInputFieldState();
 }
 
-class _PhoneInputFieldState extends State<PhoneInputField> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<Offset> _offsetAnimation;
+class _PhoneInputFieldState extends State<PhoneInputField>  {
   final _phoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
+  var _isShowWidget= false;
   final MaskTextInputFormatter _phoneFormatter = MaskTextInputFormatter(
     mask: '+7 (###) ###-##-##',
+    filter: {'#': RegExp(r'[0-9]')},
+  );
+
+  void _toggleWidget() {
+    setState(() {
+      _isShowWidget = !_isShowWidget; // Переключение состояния виджета
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          TextFormField(
+            controller: _phoneController,
+            keyboardType: TextInputType.phone,
+            inputFormatters: [_phoneFormatter],
+            decoration: InputDecoration(
+              hintText: 'Enter your phone number',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+              filled: true,
+              fillColor: Colors.white,
+            ),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please enter your phone number';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: _toggleWidget,
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              backgroundColor: const Color.fromARGB(255, 255, 3, 67),
+              minimumSize: const Size(double.infinity, 0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: const Text('Send Verification Code'),
+          ),if(_isShowWidget)
+            const CreateNewWidget()
+          ,
+        ],
+      ),
+    );
+  }
+}
+
+class CreateNewWidget extends StatefulWidget {
+  const CreateNewWidget({Key? key}) : super(key: key);
+
+  @override
+  _CreateNewWidget createState() => _CreateNewWidget();
+}
+
+class _CreateNewWidget extends State<CreateNewWidget> with SingleTickerProviderStateMixin{
+  late AnimationController _controller;
+  late Animation<Offset> _offsetAnimation;
+
+  final MaskTextInputFormatter _phoneFormatter = MaskTextInputFormatter(
+    mask: '### ###',
     filter: {'#': RegExp(r'[0-9]')},
   );
 
@@ -122,81 +189,28 @@ class _PhoneInputFieldState extends State<PhoneInputField> with SingleTickerProv
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          TextFormField(
-            controller: _phoneController,
-            keyboardType: TextInputType.phone,
-            inputFormatters: [_phoneFormatter],
-            decoration: InputDecoration(
-              hintText: 'Enter your phone number',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-              filled: true,
-              fillColor: Colors.white,
+    return SizedBox(
+      height: ,
+      child: TextFormField(
+          inputFormatters: [_phoneFormatter],
+          keyboardType: TextInputType.phone,
+          decoration: InputDecoration(
+            hintText: 'Enter a code',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
             ),
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please enter your phone number';
-              }
-              return null;
-            },
+            contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+            filled: true,
+            fillColor: Colors.white,
           ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () => {
-             const CreateNewWidget(),
-              _startAnimation,
-            },
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              backgroundColor: const Color.fromARGB(255, 255, 3, 67),
-              minimumSize: const Size(double.infinity, 0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            child: const Text('Send Verification Code'),
-          ),
-        ],
+          validator: (value) {
+            if (value!.isEmpty) {
+              return 'Enter a code';
+            }
+            return null;
+          },
       ),
     );
-  }
-}
-
-class CreateNewWidget extends StatefulWidget {
-  const CreateNewWidget({Key? key}) : super(key: key);
-
-  @override
-  _CreateNewWidget createState() => _CreateNewWidget();
-}
-
-class _CreateNewWidget extends State<CreateNewWidget> with SingleTickerProviderStateMixin{
-  @override
-  Widget build(BuildContext context) {
-    TextFormField(
-      keyboardType: TextInputType.phone,
-      decoration: InputDecoration(
-        hintText: 'Enter a code',
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-        filled: true,
-        fillColor: Colors.white,
-      ),
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Enter a code';
-        }
-        return null;
-      },
-    );
-    throw UnimplementedError();
   }
 }
 
