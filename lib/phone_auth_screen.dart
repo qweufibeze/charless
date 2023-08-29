@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -154,7 +155,7 @@ class CreateNewWidget extends StatefulWidget {
   _CreateNewWidget createState() => _CreateNewWidget();
 }
 
-class _CreateNewWidget extends State<CreateNewWidget> with SingleTickerProviderStateMixin{
+class _CreateNewWidget extends State<CreateNewWidget> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
 
@@ -168,16 +169,17 @@ class _CreateNewWidget extends State<CreateNewWidget> with SingleTickerProviderS
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 2000),
+      duration: const Duration(milliseconds: 1000),
     );
 
     _offsetAnimation = Tween<Offset>(
       begin: const Offset(0, 0), // Start at the top
-      end: const Offset(0, 1.367), // End at the center
+      end: const Offset(0, 1.36), // End at the center
     ).animate(CurvedAnimation(
       parent: _controller,
       curve: Curves.fastOutSlowIn,
     ));
+    _controller.forward(); // Start the animation
   }
 
   @override
@@ -186,38 +188,35 @@ class _CreateNewWidget extends State<CreateNewWidget> with SingleTickerProviderS
     super.dispose();
   }
 
-  void startAnimation() {
-    _controller.forward();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.topCenter,
-      child: TextFormField(
-        inputFormatters: [_phoneFormatter],
-        keyboardType: TextInputType.phone,
-        decoration: InputDecoration(
-          hintText: 'Enter a code',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+      child: SlideTransition(
+        position: _offsetAnimation,
+        child: TextFormField(
+          inputFormatters: [_phoneFormatter],
+          keyboardType: TextInputType.phone,
+          decoration: InputDecoration(
+            hintText: 'Enter a code',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+            filled: true,
+            fillColor: Colors.white,
           ),
-          contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-          filled: true,
-          fillColor: Colors.white,
+          validator: (value) {
+            if (value!.isEmpty) {
+              return 'Enter a code';
+            }
+            return null;
+          },
         ),
-        validator: (value) {
-          if (value!.isEmpty) {
-            return 'Enter a code';
-          }
-          return null;
-        },
       ),
     );
   }
 }
-
-
 
 void main(){
   runApp(
