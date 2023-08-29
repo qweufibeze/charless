@@ -18,48 +18,61 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  bool _showWidget = false; // Используется для определения, нужно ли показывать виджет
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<Offset> _offsetAnimation;
 
-  void _toggleWidget() {
-    setState(() {
-      _showWidget = !_showWidget; // Переключение состояния виджета
-    });
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 500),
+    );
+
+    _offsetAnimation = Tween<Offset>(
+      begin: Offset(0, -1), // Start above the screen
+      end: Offset.zero, // End at the original position
+    ).animate(_controller);
+
+    _controller.forward(); // Start the animation
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dynamic Widget Example'),
+        title: Text('Stack Example'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Stack(
           children: <Widget>[
-            ElevatedButton(
-              onPressed: _toggleWidget, // Вызывается при нажатии кнопки
-              child: Text(_showWidget ? 'Скрыть виджет' : 'Показать виджет'),
+            Container(
+              width: 200,
+              height: 200,
+              color: Colors.blue,
             ),
-            if (_showWidget) // Отображение виджета только при _showWidget == true
-              MyCustomWidget(),
+            SlideTransition(
+              position: _offsetAnimation,
+              child: Positioned(
+                top: 50,
+                left: 50,
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  color: Colors.red,
+                ),
+              ),
+            ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class MyCustomWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(20),
-      padding: const EdgeInsets.all(20),
-      color: Colors.blue,
-      child: const Text(
-        'Это созданный виджет!',
-        style: TextStyle(color: Colors.white),
       ),
     );
   }

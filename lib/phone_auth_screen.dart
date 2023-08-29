@@ -93,7 +93,7 @@ class _PhoneInputFieldState extends State<PhoneInputField>  {
 
   void _toggleWidget() {
     setState(() {
-      _isShowWidget = !_isShowWidget; // Переключение состояния виджета
+      _isShowWidget = true;
     });
   }
 
@@ -101,44 +101,47 @@ class _PhoneInputFieldState extends State<PhoneInputField>  {
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: Column(
-        children: [
-          TextFormField(
-            controller: _phoneController,
-            keyboardType: TextInputType.phone,
-            inputFormatters: [_phoneFormatter],
-            decoration: InputDecoration(
-              hintText: 'Enter your phone number',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+      child: Stack(
+          children: <Widget>[ Column(
+            children: [
+              TextFormField(
+                controller: _phoneController,
+                keyboardType: TextInputType.phone,
+                inputFormatters: [_phoneFormatter],
+                decoration: InputDecoration(
+                  hintText: 'Enter your phone number',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                  filled: true,
+                  fillColor: Colors.white,
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter your phone number';
+                  }
+                  return null;
+                },
               ),
-              contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-              filled: true,
-              fillColor: Colors.white,
-            ),
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please enter your phone number';
-              }
-              return null;
-            },
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _toggleWidget,
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  backgroundColor: const Color.fromARGB(255, 255, 3, 67),
+                  minimumSize: const Size(double.infinity, 0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: const Text('Send Verification Code'),
+              ),
+              if(_isShowWidget)
+                const CreateNewWidget(),
+            ],
           ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: _toggleWidget,
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              backgroundColor: const Color.fromARGB(255, 255, 3, 67),
-              minimumSize: const Size(double.infinity, 0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            child: const Text('Send Verification Code'),
-          ),if(_isShowWidget)
-            const CreateNewWidget()
-          ,
-        ],
+          ]
       ),
     );
   }
@@ -169,8 +172,8 @@ class _CreateNewWidget extends State<CreateNewWidget> with SingleTickerProviderS
     );
 
     _offsetAnimation = Tween<Offset>(
-      begin: const Offset(-0, 0), // Start at the top
-      end: const Offset(-0, 1.367), // End at the center
+      begin: const Offset(0, 0), // Start at the top
+      end: const Offset(0, 1.367), // End at the center
     ).animate(CurvedAnimation(
       parent: _controller,
       curve: Curves.fastOutSlowIn,
@@ -183,32 +186,32 @@ class _CreateNewWidget extends State<CreateNewWidget> with SingleTickerProviderS
     super.dispose();
   }
 
-  void _startAnimation() {
+  void startAnimation() {
     _controller.forward();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: ,
+    return Container(
+      alignment: Alignment.topCenter,
       child: TextFormField(
-          inputFormatters: [_phoneFormatter],
-          keyboardType: TextInputType.phone,
-          decoration: InputDecoration(
-            hintText: 'Enter a code',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-            filled: true,
-            fillColor: Colors.white,
+        inputFormatters: [_phoneFormatter],
+        keyboardType: TextInputType.phone,
+        decoration: InputDecoration(
+          hintText: 'Enter a code',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
           ),
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Enter a code';
-            }
-            return null;
-          },
+          contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+          filled: true,
+          fillColor: Colors.white,
+        ),
+        validator: (value) {
+          if (value!.isEmpty) {
+            return 'Enter a code';
+          }
+          return null;
+        },
       ),
     );
   }
@@ -218,8 +221,8 @@ class _CreateNewWidget extends State<CreateNewWidget> with SingleTickerProviderS
 
 void main(){
   runApp(
-    const MaterialApp(
-      home: PhoneAuthScreen()
-    )
+      const MaterialApp(
+          home: PhoneAuthScreen()
+      )
   );
 }
