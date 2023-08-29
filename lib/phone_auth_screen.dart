@@ -58,16 +58,36 @@ class PhoneAuthScreenContent extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 200),
+            const SizedBox(height: 100),
+             Center(
+               child: Text(
+                  'CHARLESS',
+                style: TextStyle(
+                  fontSize: 55,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.pink.shade600,
+                ),
+            ),
+             ),
+            const SizedBox(height: 50),
             Text(
               'Welcome',
               style: TextStyle(
-                fontSize: 45,
+                fontSize: 35,
                 fontWeight: FontWeight.bold,
                 color: Colors.pink.shade600,
               ),
             ),
-            const SizedBox(height: 35),
+            const SizedBox(height: 5),
+             Text(
+              'To Discover Connections Beyond Words',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.pink.shade600,
+              ),
+            ),
+            const SizedBox(height: 25),
             const PhoneInputField(),
           ],
         ),
