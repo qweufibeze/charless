@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'widget_input_phone.dart';
-import 'widget_input_code.dart';
 
 class PhoneAuthScreenContent extends StatelessWidget {
   const PhoneAuthScreenContent({Key? key}) : super(key: key);
@@ -15,15 +14,15 @@ class PhoneAuthScreenContent extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 100),
-             Center(
-               child: Text(
+            Center(
+              child: Text(
                   'CHARLESS',
                 style: TextStyle(
                   fontSize: 55,
                   fontWeight: FontWeight.bold,
                   color: Colors.pink.shade600,
                 ),
-            ),
+               ),
              ),
             const SizedBox(height: 50),
             Text(
@@ -35,7 +34,7 @@ class PhoneAuthScreenContent extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 5),
-             Text(
+            Text(
               'To Discover Connections Beyond Words',
               style: TextStyle(
                 fontSize: 18,
@@ -51,6 +50,7 @@ class PhoneAuthScreenContent extends StatelessWidget {
     );
   }
 }
+
 void main(){
   runApp(
       const MaterialApp(
