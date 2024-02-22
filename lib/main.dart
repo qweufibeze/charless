@@ -20,7 +20,6 @@ class MyScreen extends StatefulWidget {
   _MyScreenState createState() => _MyScreenState();
 }
 
-
 class _MyScreenState extends State<MyScreen> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
